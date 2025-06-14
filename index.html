@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PREMIER AUTO & TRUCK - Vehicle Stock</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .toggle, .search-bar { text-align: center; margin-bottom: 20px; }
+    .search-input, .price-input { padding: 8px; width: 80%; max-width: 200px; margin: 5px; }
+    .vehicle-card { background: #fff; border-radius: 12px; padding: 16px; margin: 16px auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 700px; }
+    .vehicle-photo { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
+    .label { font-weight: bold; display: inline-block; width: 160px; }
+    .lang-en { display: block; }
+    .lang-my { display: none; }
+    .photo-link { text-decoration: none; color: blue; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>PREMIER AUTO & TRUCK - Vehicle Stock</h1>
+
+  <div class="toggle">
+    <button onclick="toggleLanguage('en')">English</button>
+    <button onclick="toggleLanguage('my')">BM</button>
+  </div>
+
+  <div class="search-bar">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search by Plate, Model, Body Type..." onkeyup="searchVehicles()">
+    <br>
+    <input class="price-input" type="number" id="minPrice" placeholder="Min Price" oninput="searchVehicles()">
+    <input class="price-input" type="number" id="maxPrice" placeholder="Max Price" oninput="searchVehicles()">
+  </div>
+
+  <div id="vehicleList">
+    <!-- Vehicle Cards -->
+  </div>
+
+  <script>
+    function toggleLanguage(lang) {
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = (lang === 'en') ? 'inline' : 'none');
+      document.querySelectorAll('.lang-my').forEach(el => el.style.display = (lang === 'my') ? 'inline' : 'none');
+    }
+
+    function searchVehicles() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
+      const maxPrice = parseInt(document.getElementById('maxPrice').value) || Infinity;
+
+      const cards = document.querySelectorAll('.vehicle-card');
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        const priceMatch = card.innerText.match(/rm\s?([\d,]+)/i);
+        let price = 0;
+        if (priceMatch && priceMatch[1]) {
+          price = parseInt(priceMatch[1].replace(/,/g, ''));
+        }
+
+        const matchesSearch = text.includes(keyword);
+        const matchesPrice = price >= minPrice && price <= maxPrice;
+
+        card.style.display = (matchesSearch && matchesPrice) ? 'block' : 'none';
+      });
+    }
+  </script>
+
+  <!-- VEHICLE CARDS START -->
+  <!-- Existing vehicle cards go here -->
+  <div class="vehicle-card">
+    <img class="vehicle-photo" src="https://drive.google.com/thumbnail?id=1QmVn_tEk7X1C6rG7PO_JJhPeFElM6x-l" alt="WVC7932">
+    <div><span class="label lang-en">Plate Number:</span><span class="lang-en">WVC7932</span><span class="lang-my">Nombor Pendaftaran:</span><span class="lang-my">WVC7932</span></div>
+    <div><span class="label lang-en">Model:</span><span class="lang-en">HINO WU300R-HBMLS3</span><span class="lang-my">Model:</span><span class="lang-my">HINO WU300R-HBMLS3</span></div>
+    <div><span class="label lang-en">Year:</span><span class="lang-en">2010/2010</span><span class="lang-my">Tahun:</span><span class="lang-my">2010/2010</span></div>
+    <div><span class="label lang-en">Body Type:</span><span class="lang-en">Cargo</span><span class="lang-my">Jenis Badan:</span><span class="lang-my">Cargo</span></div>
+    <div><span class="label lang-en">Body Length:</span><span class="lang-en">10 ft</span><span class="lang-my">Panjang Badan:</span><span class="lang-my">10 kaki</span></div>
+    <div><span class="label lang-en">BDM:</span><span class="lang-en">5000 kg</span><span class="lang-my">BDM:</span><span class="lang-my">5000 kg</span></div>
+    <div><span class="label lang-en">Selling Price:</span><span class="lang-en">RM 50,000</span><span class="lang-my">Harga Jualan:</span><span class="lang-my">RM 50,000</span></div>
+    <div><a class="photo-link" href="https://drive.google.com/drive/folders/1hZy1XlDwjv200AOdUzFkd1dwI5JPM8Iw" target="_blank">View More Photos</a></div>
+  </div>
+
+  <div class="vehicle-card">
+    <div class="vehicle-photo">No Preview</div>
+    <div><span class="label lang-en">Plate Number:</span><span class="lang-en">BLJ5718</span><span class="lang-my">Nombor Pendaftaran:</span><span class="lang-my">BLJ5718</span></div>
+    <div><span class="label lang-en">Model:</span><span class="lang-en">ISUZU NPR66UPL</span><span class="lang-my">Model:</span><span class="lang-my">ISUZU NPR66UPL</span></div>
+    <div><span class="label lang-en">Year:</span><span class="lang-en">2011</span><span class="lang-my">Tahun:</span><span class="lang-my">2011</span></div>
+    <div><span class="label lang-en">Body Type:</span><span class="lang-en">Corrugated Box</span><span class="lang-my">Jenis Badan:</span><span class="lang-my">Box Beralun</span></div>
+    <div><span class="label lang-en">Body Length:</span><span class="lang-en">17 ft</span><span class="lang-my">Panjang Badan:</span><span class="lang-my">17 kaki</span></div>
+    <div><span class="label lang-en">BDM:</span><span class="lang-en">5000 kg</span><span class="lang-my">BDM:</span><span class="lang-my">5000 kg</span></div>
+    <div><span class="label lang-en">Selling Price:</span><span class="lang-en">RM 75,000</span><span class="lang-my">Harga Jualan:</span><span class="lang-my">RM 75,000</span></div>
+  </div>
+
+  <div class="vehicle-card">
+    <div class="vehicle-photo">No Preview</div>
+    <div><span class="label lang-en">Plate Number:</span><span class="lang-en">BLG9137</span><span class="lang-my">Nombor Pendaftaran:</span><span class="lang-my">BLG9137</span></div>
+    <div><span class="label lang-en">Model:</span><span class="lang-en">HINO WU300R-HBMLS3</span><span class="lang-my">Model:</span><span class="lang-my">HINO WU300R-HBMLS3</span></div>
+    <div><span class="label lang-en">Year:</span><span class="lang-en">2011</span><span class="lang-my">Tahun:</span><span class="lang-my">2011</span></div>
+    <div><span class="label lang-en">Body Type:</span><span class="lang-en">Box</span><span class="lang-my">Jenis Badan:</span><span class="lang-my">Box</span></div>
+    <div><span class="label lang-en">Body Length:</span><span class="lang-en">10 ft</span><span class="lang-my">Panjang Badan:</span><span class="lang-my">10 kaki</span></div>
+    <div><span class="label lang-en">BDM:</span><span class="lang-en">4800 kg</span><span class="lang-my">BDM:</span><span class="lang-my">4800 kg</span></div>
+    <div><span class="label lang-en">Selling Price:</span><span class="lang-en">RM 85,000</span><span class="lang-my">Harga Jualan:</span><span class="lang-my">RM 85,000</span></div>
+  </div>
+  <!-- VEHICLE CARDS END -->
+</body>
+</html>
