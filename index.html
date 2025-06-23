@@ -12,6 +12,10 @@
       --bg-light: #f8f8f8;
       --text-dark: #333;
     }
+    html, body {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
     body {
       font-family: Arial, sans-serif;
       background: var(--bg-light);
@@ -40,6 +44,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
+      min-height: 50vh;
     }
     .card {
       background: white;
@@ -92,6 +97,12 @@
       color: #666;
       font-size: 14px;
     }
+    .loading {
+      text-align: center;
+      font-size: 16px;
+      color: #999;
+      padding: 40px 0;
+    }
     @media (max-width: 600px) {
       .controls input {
         width: 100%;
@@ -104,14 +115,15 @@
   </style>
 </head>
 <body>
-  <img src="https://drive.google.com/uc?export=view&id=1Y4aQAQnVpB4cMKa9obMnwV" alt="Company Logo" class="logo">
+  <img src="https://drive.google.com/uc?export=view&id=1Y4aQAQnVpB4cMKa9obMnwV" alt="Company Logo" class="logo" onerror="this.style.display='none'">
   <h1>PREMIER AUTO & TRUCK - Live Vehicle Stock</h1>
   <div class="controls">
     <input type="text" id="search" placeholder="Search Plate, Model, Body Type..." oninput="filterCards()">
     <input type="number" id="minPrice" placeholder="Min Price" oninput="filterCards()">
     <input type="number" id="maxPrice" placeholder="Max Price" oninput="filterCards()">
   </div>
-  <div id="vehicleCards" class="vehicle-container"></div>
+  <div id="loading" class="loading">Loading vehicle stock...</div>
+  <div id="vehicleCards" class="vehicle-container" style="display:none"></div>
 
   <a href="https://wa.me/601153558018" class="whatsapp-button" target="_blank">💬 WhatsApp Us</a>
 
@@ -130,11 +142,18 @@
       return json.table.rows.map(row => row.c.map(cell => cell ? cell.v : ""));
     }
 
+    function sanitizeUrl(url) {
+      return (url || '').replace(/[\n\r\t\s]+/g, '').trim();
+    }
+
     function renderCards(data) {
       const container = document.getElementById('vehicleCards');
+      const loading = document.getElementById('loading');
       container.innerHTML = '';
       data.forEach(item => {
-        const [plate, model, year, bodyType, length, bdm, price, status, photoUrl, folderLink] = item;
+        let [plate, model, year, bodyType, length, bdm, price, status, photoUrl, folderLink] = item;
+        photoUrl = sanitizeUrl(photoUrl);
+        folderLink = sanitizeUrl(folderLink);
         if (!photoUrl) return;
         const card = document.createElement('div');
         card.className = 'card';
@@ -152,6 +171,8 @@
           </div>`;
         container.appendChild(card);
       });
+      loading.style.display = 'none';
+      container.style.display = 'flex';
     }
 
     function filterCards() {
