@@ -143,22 +143,26 @@
     }
 
     function sanitizeUrl(url) {
-      return (url || '').replace(/[\n\r\t\s]+/g, '').trim();
+      return (url || '').toString().replace(/[\s\u200B-\u200D\uFEFF]+/g, '').trim();
     }
 
     function renderCards(data) {
       const container = document.getElementById('vehicleCards');
       const loading = document.getElementById('loading');
       container.innerHTML = '';
+      if (!data.length) {
+        container.innerHTML = '<p>No vehicle data found.</p>';
+        loading.style.display = 'none';
+        container.style.display = 'block';
+        return;
+      }
       data.forEach(item => {
         let [plate, model, year, bodyType, length, bdm, price, status, photoUrl, folderLink] = item;
         photoUrl = sanitizeUrl(photoUrl);
-        folderLink = sanitizeUrl(folderLink);
-        if (!photoUrl) return;
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <img src="${photoUrl}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+          <img src="${photoUrl || 'https://via.placeholder.com/300x200?text=No+Image'}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
           <div class="card-content">
             <div><span class="label">Plate:</span> ${plate}</div>
             <div><span class="label">Model:</span> ${model}</div>
@@ -183,8 +187,7 @@
       const filtered = fullData.filter(item => {
         const text = item.join(' ').toLowerCase();
         const price = parseInt(item[6]) || 0;
-        const hasPhoto = item[8] !== "";
-        return text.includes(search) && price >= minPrice && price <= maxPrice && hasPhoto;
+        return text.includes(search) && price >= minPrice && price <= maxPrice;
       });
       renderCards(filtered);
     }
