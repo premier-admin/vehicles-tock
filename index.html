@@ -143,7 +143,7 @@
     }
 
     function sanitizeUrl(url) {
-      return (url || '').toString().replace(/[\s\u200B-\u200D\uFEFF]+/g, '').trim();
+      return (url || '').toString().replace(/\s+/g, '').trim();
     }
 
     function renderCards(data) {
