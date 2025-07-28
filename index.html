@@ -162,8 +162,8 @@
         let [plate, model, year, bodyType, length, bdm, price, status, photoUrl, folderLink] = item;
         photoUrl = sanitizeUrl(photoUrl);
 
-        const hasPhoto = photoUrl.startsWith('http');
-        const finalPhotoUrl = hasPhoto ? photoUrl : './fallback.jpeg';
+        const isDriveImage = photoUrl.includes('drive.google.com');
+        const finalPhotoUrl = isDriveImage ? photoUrl : 'https://raw.githubusercontent.com/premier-admin/vehicles-tock/main/fallback.jpeg';
 
         const card = document.createElement('div');
         card.className = 'card';
