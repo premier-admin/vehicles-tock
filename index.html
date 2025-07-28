@@ -163,12 +163,12 @@
         photoUrl = sanitizeUrl(photoUrl);
 
         const hasPhoto = photoUrl.startsWith('http');
-        const finalPhotoUrl = hasPhoto ? photoUrl : './fallback.jpg';
+        const finalPhotoUrl = hasPhoto ? photoUrl : './fallback.jpeg';
 
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <img src="${finalPhotoUrl}" onerror="this.src='./fallback.jpg'">
+          <img src="${finalPhotoUrl}" onerror="this.src='./fallback.jpeg'">
           <div class="card-content">
             <div><span class="label">Plate:</span> ${plate}</div>
             <div><span class="label">Model:</span> ${model}</div>
